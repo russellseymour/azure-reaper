@@ -1,6 +1,8 @@
 using System;
+using System.Text;
+using Newtonsoft.Json;
 
-namespace Azure.Reaper
+namespace Azure.Reaper.Models
 {
 
   public class ActivityLog
@@ -11,11 +13,18 @@ namespace Azure.Reaper
     public string resourceGroupName;
     public string subscriptionId;
     public string caller;
-    public ActivityLogClaim claim;
+    public ActivityLogClaims claim;
+    public string claims;
 
     public ActivityLog()
     {
+      this.ReadClaims();
+    }
 
+    public void ReadClaims() {
+      // remove the encoding from the claims string
+      string json = this.RemoveEncoding(this.claims);
+      this.claim = JsonConvert.DeserializeObject<ActivityLogClaims>(json);
     }
 
     /// <summary>
@@ -41,7 +50,7 @@ namespace Azure.Reaper
       switch (name)
       {
         case "tag_owner":
-          result = claim.ownerName;
+          result = claim.name;
           break;
         case "tag_owner_email":
           result = caller;
@@ -52,6 +61,16 @@ namespace Azure.Reaper
       }
 
       return result;
+    }
+
+    private string RemoveEncoding(string encodedJson)
+    {
+      var sb = new StringBuilder(encodedJson);
+      sb.Replace("\\", string.Empty);
+      sb.Replace("\"[", "[");
+      sb.Replace("]\"", "]");
+      return sb.ToString();
+
     }
   }
 }

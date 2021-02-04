@@ -22,7 +22,7 @@ namespace Azure.Reaper
     public string message;
     public string level;
     private DateTime timeNowUtc;
-    private ActivityLog activityLog;
+    private Models.ActivityLog activityLog;
 
     public ResourceGroup(
       IResourceGroup resourceGroup,
@@ -47,7 +47,7 @@ namespace Azure.Reaper
       IResourceGroup resourceGroup,
       ILogger logger,
       IEnumerable<Setting> settings,
-      ActivityLog activityLog
+      Models.ActivityLog activityLog
     )
     {
       this.resourceGroup = resourceGroup;
@@ -64,7 +64,7 @@ namespace Azure.Reaper
     {
       bool result = false;
 
-      if (resourceGroup.Tags == null)
+      if (resourceGroup.Inner.Tags == null)
       {
         logger.LogInformation("{0}: No tags have been set", resourceGroup.Name);
       }
@@ -88,9 +88,9 @@ namespace Azure.Reaper
       result = HasTags();
 
       // If the tags include InUse attempt tp convert it and then perform the test
-      if (result && resourceGroup.Tags.ContainsKey("InUse"))
+      if (result && resourceGroup.Inner.Tags.ContainsKey("InUse"))
       {
-        bool inUse = Convert.ToBoolean(resourceGroup.Tags["InUse"]);
+        bool inUse = Convert.ToBoolean(resourceGroup.Inner.Tags["InUse"]);
 
         if (inUse)
         {
@@ -158,7 +158,7 @@ namespace Azure.Reaper
       bool result = false;
       string tagName =  settings.First(s => s.name == name).value;
 
-      if (resourceGroup.Tags.ContainsKey(tagName))
+      if (resourceGroup.Inner.Tags != null && resourceGroup.Inner.Tags.ContainsKey(tagName))
       {
         result = true;
       }
@@ -174,7 +174,7 @@ namespace Azure.Reaper
       if (HasTag(name))
       {
         string tagName =  settings.First(s => s.name == name).value;
-        result = resourceGroup.Tags[tagName];
+        result = resourceGroup.Inner.Tags[tagName];
       }
 
       return result;
@@ -182,7 +182,7 @@ namespace Azure.Reaper
 
     public Dictionary<string, string> GetTags()
     {
-      return (Dictionary<string, string>) resourceGroup.Tags;
+      return (Dictionary<string, string>) resourceGroup.Inner.Tags;
     }
 
     /// <summary>
@@ -340,7 +340,7 @@ namespace Azure.Reaper
           // Get the value from the ActivityLog
           string value = activityLog.GetValue(compulsoryTag);
 
-          logger.LogInformation("{0}: Adding '{1}' tag", nameOfTag);
+          logger.LogInformation("{0}: Adding '{1}' tag", GetName(), nameOfTag);
           groupTags.Add(nameOfTag, value);
           update = true;
         }
