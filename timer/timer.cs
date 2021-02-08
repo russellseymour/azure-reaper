@@ -18,7 +18,7 @@ namespace Azure.Reaper
             )] DocumentClient client,
             ILogger log)
         {
-            bool status;
+            // bool status;
             
             log.LogInformation("Reaper triggered at {0}", DateTime.Now);
 

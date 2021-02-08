@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
@@ -69,12 +70,18 @@ namespace Azure.Reaper
             // As this is a REST API use the HTTP Method to determine what is required
             if (req.Method == "GET")
             {
-                // Set the identifier on the entity so that a search can be performed
-                IEntity result = entity.Get(id);
-
                 // Build up the response to return
                 msg = entity.GetResponse();
-                response = msg.CreateResponse(result);
+
+                // Set the identifier on the entity so that a search can be performed
+                if (String.IsNullOrEmpty(id)) {
+                    IEnumerable<IEntity> result = entity.GetAll();
+                    response = msg.CreateResponse(result);
+                } else {
+                    IEntity result = entity.Get(id);
+                    response = msg.CreateResponse(result);
+                }
+
             } else {
 
                 // Get the JSON string from the body

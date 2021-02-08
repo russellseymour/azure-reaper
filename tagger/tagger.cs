@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 
 namespace Azure.Reaper
 {
@@ -18,7 +15,7 @@ namespace Azure.Reaper
             [QueueTrigger(
                 "logalertqueue",
                 Connection = "AzureWebJobsStorage"
-            )] ActivityLog activityLog,
+            )] Models.QueueMessage message,
             [CosmosDB(
                 ConnectionStringSetting = "azreaper_DOCUMENTDB",
                 CreateIfNotExists = true
@@ -27,9 +24,15 @@ namespace Azure.Reaper
         )
         {
 
+            Models.ActivityLog activityLog = message.data.context.activityLog;
+
             // Determine if a resource group has been created
             if (activityLog.IsCreated())
             {
+
+                // read the claims from the message
+                activityLog.ReadClaims();
+
                 log.LogInformation("Considering Resource Group: {0}", activityLog.resourceGroupName);
 
                 // Search for the credentials for the subscriptionId recieved

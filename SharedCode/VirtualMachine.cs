@@ -176,7 +176,7 @@ namespace Azure.Reaper
         hasTag = HasTag("tag_vm_start_stop_time");
         if (hasTag)
         {
-          tagSchedule = GetTag("tag_vm_start_stop_time");
+          tagSchedule = resourceGroup.GetTag("tag_vm_start_stop_time");
           message = String.Format("{0} - {1}: VM power state schedule found on virtual machine: {2}", resourceGroup.GetName(), GetName(), (string) tagSchedule);
         }
       }
