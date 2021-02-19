@@ -85,6 +85,11 @@ namespace Azure.Reaper
                 foreach (Subscription sub in subscriptions)
                 {
 
+                    // only proceed if the reaper has been enabled on the subscription
+                    if (!sub.reaper) {
+                        continue;
+                    }
+
                     // Determine the timenow to be used as criteria
                     // This is done on each subscription because there might be a lot of groups to enumerate
                     DateTime _time_now = DateTime.UtcNow;

@@ -23,7 +23,7 @@ namespace Azure.Reaper
             log.LogInformation("Reaper triggered at {0}", DateTime.Now);
 
             Reaper reaper = new Reaper();
-            // status = await reaper.Process(client, log);
+            bool status = await reaper.Process(client, log);
         }
     }
 }
