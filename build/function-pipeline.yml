@@ -42,7 +42,7 @@ stages:
             inputs:
               rootFolderOrFile: $(Build.SourcesDirectory)/function
               includeRootFolder: false
-              archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveSrcZipFilename)
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(archiveSrcZipFilename)
 
           # - Tar file
           - task: ArchiveFiles@2
@@ -51,7 +51,7 @@ stages:
               rootFolderOrFile: $(Build.SourcesDirectory)/function
               includeRootFolder: false
               archiveType: tar
-              archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveSrcTarFilename)
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(archiveSrcTarFilename)
 
           # Package the compiled function into a zip file
           - task: ArchiveFiles@2
@@ -59,7 +59,7 @@ stages:
             inputs:
               rootFolderOrFile: $(functionOutputDir)
               includeRootFolder: false
-              archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveFileName)
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(archiveFileName)
 
           # Install Bicep
           - task: BicepInstall@0
