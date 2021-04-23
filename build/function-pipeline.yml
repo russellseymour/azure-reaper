@@ -61,6 +61,12 @@ stages:
               includeRootFolder: false
               archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveFileName)
 
+          # Install Bicep
+          - task: BicepInstall@0
+            displayName: Install Bicep
+            inputs:
+              version: 0.3.255
+
           # Build the bicep file into an ARM template
           - task: BicepBuild@0
             displayName: Build Bicep template
