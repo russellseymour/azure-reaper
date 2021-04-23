@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "object"
+    },
+    "apiVersions": {
+      "type": "object"
+    }
+  },
+  "variables": {
+    "name": {
+      "cosmosdb": "[parameters('name')]"
+    },
+    "apiVersions": {
+      "cosmosdb": "[parameters('apiVersions').cosmosdb]"
+    },
+    "location": "[parameters('location')]"
+  },
+  "resources": [
+    {
+      "comments": "Database storage for Azure functions",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "name": "[variables('name').cosmosdb]",
+      "tags": "[parameters('tags')]",
+      "kind": "GlobalDocumentDB",
+      "apiVersion": "[variables('apiVersions').cosmosdb]",
+      "location": "[variables('location')]",
+      "properties": {
+        "capabilities": [
+          {
+            "name": "EnableTable"
+          }
+        ],
+        "databaseAccountOfferType": "Standard",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "Session",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "name": "reaper"
+      }
+    }
+  ],
+  "outputs": {
+    "key": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('name').cosmosdb), variables('apiVersions').cosmosdb).primaryMasterKey]"
+    }
+  }
+}

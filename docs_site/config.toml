@@ -1,0 +1,10 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Azure Reaper"
+
+theme = "learn"
+
+publishDir = "../docs"
+
+[params]
+    customCSS = ["css/own.css"]

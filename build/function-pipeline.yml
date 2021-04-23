@@ -1,0 +1,91 @@
+name: 0.6$(Rev:.r)
+
+# Define variables
+variables:
+  buildImage: ubuntu-20.04
+  buildOutputDir: $(Build.SourcesDirectory)/output
+  functionOutputDir: $(buildOutputDir)/function
+  archiveFilename: azure-reaper-$(Build.BuildNumber).zip
+  archiveSrcZipFilename: azure-reaper-src-$(Build.BuildNumber).zip
+  archiveSrcTarFilename: azure-reaper-src-$(Build.BuildNumber).tar.gz
+
+  # configure the URI to the zip file that needs to be used in the deployment
+  # this will be patched in the built template file
+  releaseZipUrl: $(Build.Repository.Uri)/archive/refs/tags/v$(Build.BuildNumber).zip
+
+stages:
+
+  - stage: build_reaper_function
+    displayName: Build Azure Reaper
+
+    jobs:
+
+      - job: build
+        displayName: Build
+        pool:
+          vmImage: $(buildImage)
+
+        steps:
+
+          # Compile the function and output to a directory
+          - task: DotNetCoreCLI@2
+            displayName: Compile function
+            inputs:
+              projects: '*.csproj'
+              arguments: '--output $(functionOutputDir) --configuration Release'
+              workingDirectory: $(Build.SourcesDirectory)/function
+
+          # Package the src code
+          # - Zip file
+          - task: ArchiveFiles@2
+            displayName: Package source code - zip
+            inputs:
+              rootFolderOrFile: $(Build.SourcesDirectory)/function
+              includeRootFolder: false
+              archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveSrcZipFilename)
+
+          # - Tar file
+          - task: ArchiveFiles@2
+            displayName: Package source code - tar
+            inputs:
+              rootFolderOrFile: $(Build.SourcesDirectory)/function
+              includeRootFolder: false
+              archiveType: tar
+              archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveSrcTarFilename)
+
+          # Package the compiled function into a zip file
+          - task: ArchiveFiles@2
+            displayName: Package function
+            inputs:
+              rootFolderOrFile: $(functionOutputDir)
+              includeRootFolder: false
+              archiveFile: $(Build.ArtifactsStagingDirectory)/$(archiveFileName)
+
+          # Build the bicep file into an ARM template
+          - task: BicepBuild@0
+            displayName: Build Bicep template
+            inputs:
+              process: single
+              sourceFile: $(Build.SourcesDirectory)/infrastructure/azuredeploy.bicep
+              stdout: false
+              outputDirectory: $(Build.ArtifactStagingDirectory)
+
+          # Patch the JSON template file with the releaseZipUrl
+          - task: geeklearningio.gl-vsts-tasks-file-patch.json-patch-task.JsonPatch@4
+            displayName: 'Patch ARM template with release zip file URL'
+            inputs:
+              JsonWorkingDir: $(Build.ArtifactStagingDirectory)
+              JsonTargetFilters: azuredeploy.json
+              JsonPatchContent: '+ /parameters/packageUri/value => "$(releaseZipUrl)"'
+
+          # Publish the artefact
+          - task: PublishPipelineArtifact@1
+            displayName: Publish zip files and ARM template
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+
+          
+
+
+
+    

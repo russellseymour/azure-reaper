@@ -264,3 +264,9 @@ __pycache__/
 *.pyc
 
 local
+docs
+*.lock.hcl
+
+output
+
+.terraform
