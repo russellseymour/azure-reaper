@@ -31,9 +31,9 @@ stages:
           - task: DotNetCoreCLI@2
             displayName: Compile function
             inputs:
-              projects: '*.csproj'
+              projects: '$(Build.SourcesDirectory)/function/*.csproj'
               arguments: '--output $(functionOutputDir) --configuration Release'
-              workingDirectory: $(Build.SourcesDirectory)/function
+              # workingDirectory: $(Build.SourcesDirectory)/function
 
           # Package the src code
           # - Zip file
