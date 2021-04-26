@@ -8,6 +8,7 @@ variables:
   archiveFilename: azure-reaper-$(Build.BuildNumber).zip
   archiveSrcZipFilename: azure-reaper-src-$(Build.BuildNumber).zip
   archiveSrcTarFilename: azure-reaper-src-$(Build.BuildNumber).tar.gz
+  releaseArtefactsDir: $(Build.SourcesDirectory)/build_artefacts
 
   # configure the URI to the zip file that needs to be used in the deployment
   # this will be patched in the built template file
@@ -89,9 +90,38 @@ stages:
             displayName: Publish zip files and ARM template
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: drop
 
-          
+  - stage: release_build_artefacts
+    displayName: Create GitHub release
+    dependsOn: build_reaper_function
 
+    jobs:
+      
+      - job: release
+        displayName: Uplaod Artefacts
+        pool:
+          vmImage: $(buildImage)
+
+        steps:
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Download Build Artefacts
+            inputs:
+              artifact: drop
+              path: $(releaseArtefactsDir)
+
+          - task: GitHubRelease@1
+            displayName: Create Release in GitHub
+            inputs:
+              gitHubConnection: russellseymour
+              repositoryName: $(Build.Repository.Name)
+              action: create
+              assets: $(releaseArtefactsDir)/*
+              isDraft: true
+              tagSource: userSpecifiedTag
+              tag: v$(Build.BuildNumber)
+              title: v$(Build.BuildNumber)
 
 
     
