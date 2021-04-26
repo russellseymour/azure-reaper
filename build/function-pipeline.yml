@@ -12,7 +12,7 @@ variables:
 
   # configure the URI to the zip file that needs to be used in the deployment
   # this will be patched in the built template file
-  releaseZipUrl: $(Build.Repository.Uri)/releases/download/azure-reaper-$(Build.BuildNumber).zip
+  releaseZipUrl: $(Build.Repository.Uri)/releases/download/v$(Build.BuildNumber)/azure-reaper-$(Build.BuildNumber).zip
 
 stages:
 
