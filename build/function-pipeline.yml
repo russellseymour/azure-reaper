@@ -114,7 +114,7 @@ stages:
           - task: GitHubRelease@1
             displayName: Create Release in GitHub
             inputs:
-              gitHubConnection: russellseymour
+              gitHubConnection: russellseymour_github
               repositoryName: $(Build.Repository.Name)
               action: create
               assets: $(releaseArtefactsDir)/*
