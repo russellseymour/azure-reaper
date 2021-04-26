@@ -83,7 +83,7 @@ stages:
             inputs:
               JsonWorkingDir: $(Build.ArtifactStagingDirectory)
               JsonTargetFilters: azuredeploy.json
-              JsonPatchContent: '+ /parameters/packageUri/value => "$(releaseZipUrl)"'
+              JsonPatchContent: '+ /parameters/packageUri/defaultValue => "$(releaseZipUrl)"'
 
           # Publish the artefact
           - task: PublishPipelineArtifact@1
