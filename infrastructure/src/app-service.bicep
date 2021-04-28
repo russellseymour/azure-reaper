@@ -13,23 +13,14 @@ param tags object
 // id of the serviceplan
 param servicePlanId string
 
-// name of the storage account
-param storageAccountName string
-
-// access key for the storage account
-param storageAccountKey string
-
-// table ednpoint for storage
-param storageTableEndpoint string
+// Conection string for the storage account
+param storageAccountConnectionString string
 
 // the instrumentation key for application insights
 param applicationInsightsInstrumenationKey string
 
-// name of the cosmos database
-param cosmosDbName string
-
-// key to access the cosmosDb
-param cosmosDbKey string
+// connection string to use for the CosmosDB
+param cosmosConnectionString string
 
 // URL to the zip file containing the function to deploy
 param packageUri string
@@ -52,7 +43,7 @@ resource site 'Microsoft.Web/sites@2020-12-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: concat('DefaultEndPointsProtocol=https;AccountName=', storageAccountName, ';AccountKey=', storageAccountKey, ';')
+          value: storageAccountConnectionString
         }
         {
           name: 'databaseName'
@@ -63,12 +54,16 @@ resource site 'Microsoft.Web/sites@2020-12-01' = {
           value: 'dotnet'
         }
         {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~3'
+        }
+        {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: applicationInsightsInstrumenationKey
         }
         {
           name: 'connectionString'
-          value: concat('DefaultEndPointsProtocol=https;AccountName=', storageAccountName, ';AccountKey=', storageAccountKey, ';TabelEndpoint=', storageTableEndpoint, ';')
+          value: cosmosConnectionString
         }
       ]
     }

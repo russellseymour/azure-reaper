@@ -19,6 +19,8 @@ param connectionName string
 // the id of the connection to use
 param apiConnectionId string
 
+param apiId string
+
 // Variables ----------------------------------------------------------------
 
 // Resources ----------------------------------------------------------------
@@ -35,7 +37,7 @@ resource workflow 'Microsoft.Logic/workflows@2019-05-01' = {
           'azurequeues': {
             connectionId: apiConnectionId
             connectionName: connectionName
-            id: apiConnectionId
+            id: apiId
           }
         }
       }
@@ -64,7 +66,7 @@ resource workflow 'Microsoft.Logic/workflows@2019-05-01' = {
           inputs: {
             host: {
               connection: {
-                name: '@parameters(\'$connections\')[\'azurequeue\'][\'connectionId\']]'
+                name: '@parameters(\'$connections\')[\'azurequeue\'][\'connectionId\']'
               }
             }
             method: 'put'
@@ -85,7 +87,7 @@ resource workflow 'Microsoft.Logic/workflows@2019-05-01' = {
             body: '@{triggerBody()}'
             host: {
               connection: {
-                name: '@parameters(\'$connections\')[\'azurequeue\'][\'connectionId\']]'
+                name: '@parameters(\'$connections\')[\'azurequeue\'][\'connectionId\']'
               }
             }
             method: 'post'

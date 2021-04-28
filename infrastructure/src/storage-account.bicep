@@ -15,4 +15,5 @@ resource stg 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 }
 
 output accesskey string = listKeys(stg.id, stg.apiVersion).keys[0].value
-output tableEndpoint string = stg.properties.primaryEndpoints.table
+output connectionString string = concat('DefaultEndpointsProtocol=https;AccountName=', name, ';AccountKey=', listKeys(stg.id, stg.apiVersion).keys[0].value, ';')
+// output tableEndpoint string = stg.properties.primaryEndpoints.table

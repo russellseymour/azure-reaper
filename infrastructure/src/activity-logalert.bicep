@@ -4,9 +4,6 @@
 // name of the CosmosDB in Azure
 param name string
 
-// location of the database
-param location string
-
 // tags that should be applied
 param tags object
 
@@ -19,7 +16,7 @@ param actionGroupId string
 
 resource logAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
   name: name
-  location: location
+  location: 'Global'
   tags: tags
   properties: {
     enabled: true

@@ -4,9 +4,6 @@
 // name of the CosmosDB in Azure
 param name string
 
-// location of the database
-param location string
-
 // tags that should be applied
 param tags object
 
@@ -25,7 +22,7 @@ param logicAppCallbackUrl string
 
 resource actionGroup 'microsoft.insights/actionGroups@2019-06-01' = {
   name: name
-  location: location
+  location: 'Global'
   tags: tags
   
   properties: {

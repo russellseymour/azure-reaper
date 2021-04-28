@@ -41,3 +41,4 @@ resource db 'Microsoft.DocumentDB/databaseAccounts@2021-03-15' = {
 }
 
 output key string = listKeys(db.id, db.apiVersion).primaryMasterKey
+output connectionString string = concat('DefaultEndpointsProtocol=https;AccountName=', name, ';AccountKey=', listKeys(db.id, db.apiVersion).primaryMasterKey, ';TableEndpoint=https://', name, '.table.cosmos.azure.com:443/;')

@@ -54,7 +54,7 @@ var spSKU = {
 
 // Storage Account
 module saModule 'src/storage-account.bicep' = {
-  name: concat(name.storageAccount, '-Deployment')
+  name: 'StorageAccount-Deployment'
   params: {
     location: location
     name: name.storageAccount
@@ -66,7 +66,7 @@ module saModule 'src/storage-account.bicep' = {
 
 // Cosmos DB
 module cosmosDbModule 'src/cosmodb.bicep' = {
-  name: concat(name.cosmosdb, '-Deployment')
+  name: 'CosmosDB-Deployment'
   params: {
     location: location
     name: name.cosmosdb
@@ -78,10 +78,10 @@ module cosmosDbModule 'src/cosmodb.bicep' = {
 
 // Application Insights
 module appInsightsModule 'src/application-insights.bicep' = {
-  name: concat(name.applicationInsights, '-Deployment')
+  name: 'ApplicationInsights-Deployment'
   params: {
     location: location
-    name: name.cosmosdb
+    name: name.applicationInsights
     tags: {
       description: 'Monitoring for the functions website'
     }
@@ -90,10 +90,10 @@ module appInsightsModule 'src/application-insights.bicep' = {
 
 // AppService Plan
 module appServicePlanModule 'src/app-service-plan.bicep' = {
-  name: concat(name.appServicePlan, '-Deployment')
+  name: 'AppServicePlan-Deployment'
   params: {
     location: location
-    name: name.cosmosdb
+    name: name.appServicePlan
     tags: {
       description: 'Web server farm to host the function'
     }
@@ -103,7 +103,7 @@ module appServicePlanModule 'src/app-service-plan.bicep' = {
 
 // AppService
 module appServiceModule 'src/app-service.bicep' = {
-  name: name.site
+  name: 'Site-Deployment'
   dependsOn: [
     saModule
     appInsightsModule
@@ -111,27 +111,24 @@ module appServiceModule 'src/app-service.bicep' = {
   ]
   params: {
     location: location
-    name: name.cosmosdb
+    name: name.site
     tags: {
       description: 'Website app service to execute the Azure Reaper function'
     }
     servicePlanId: appServicePlanModule.outputs.id
-    storageAccountName: name.storageAccount
-    storageAccountKey: saModule.outputs.accesskey
-    storageTableEndpoint: saModule.outputs.tableEndpoint
+    storageAccountConnectionString: saModule.outputs.connectionString
     applicationInsightsInstrumenationKey: appInsightsModule.outputs.instrumentationKey
-    cosmosDbName: name.cosmosdb
-    cosmosDbKey: cosmosDbModule.outputs.key
+    cosmosConnectionString: cosmosDbModule.outputs.connectionString
     packageUri: packageUri
   }
 }
 
 // Queue API Connection
 module apiConnQueue 'src/apiConnections/azurequeue.bicep' = {
-  name: concat(name.apiConnection, '-Deployment')
+  name: 'APIConnection-Deployment'
   params: {
     location: location
-    name: name.apiConnection
+    name: name.azureQueues
     tags: {
       description: 'API Connection to the Storage Account for Logic Apps'
     }
@@ -142,7 +139,10 @@ module apiConnQueue 'src/apiConnections/azurequeue.bicep' = {
 
 // Alert Logic App
 module alertLogicApp 'src/logicApps/alert.bicep' = {
-  name: concat(name.logicApps.alert, '-Deployment')
+  name: 'LogicApp-Alert-Deployment'
+  dependsOn: [
+    apiConnQueue
+  ]
   params: {
     location: location
     name: name.logicApps.alert
@@ -150,6 +150,7 @@ module alertLogicApp 'src/logicApps/alert.bicep' = {
       description: 'Logic App to recieve the alert that is generated when a new eresource group is created'
     }
     apiConnectionId: apiConnQueue.outputs.id
+    apiId: apiConnQueue.outputs.apiId
     queueName: name.queue
     connectionName: name.azureQueues
   }
@@ -157,9 +158,11 @@ module alertLogicApp 'src/logicApps/alert.bicep' = {
 
 // Action group
 module actionGroup 'src/action-group.bicep' = {
-  name: concat(name.actionGroup, '-Deployment')
+  name: 'ActionGroup-Deployment'
+  dependsOn: [
+    alertLogicApp
+  ]
   params: {
-    location: location
     name: name.logicApps.alert
     tags: {
       description: 'Actions that need to be performed when a new resource group has been created'
@@ -172,9 +175,11 @@ module actionGroup 'src/action-group.bicep' = {
 
 // Activity Log alert
 module activityLogAlert 'src/activity-logalert.bicep' = {
-  name: concat(name.activityLogAlert, '-Deployment')
+  name: 'Activity-LogAlert-Deployment'
+  dependsOn: [
+    actionGroup
+  ]
   params: {
-    location: location
     name: name.logicApps.alert
     tags: {
       description: 'Alert generated when a new resource group is created'

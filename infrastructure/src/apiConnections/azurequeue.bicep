@@ -18,6 +18,9 @@ param storageAccountKey string
 
 // Variables ----------------------------------------------------------------
 
+// determine the apiId to use and return
+var apiId = concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', location, '/managedApis/azurequeues')
+
 // Resources ----------------------------------------------------------------
 
 resource apiConnectionQueue 'Microsoft.Web/connections@2016-06-01' = {
@@ -27,7 +30,7 @@ resource apiConnectionQueue 'Microsoft.Web/connections@2016-06-01' = {
   properties: {
     displayName: name
     api: {
-      id: concat('/subscriptions/', subscription().id, '/providers/Microsoft.Web/locations/', location, '/managedApis/azurequeues')
+      id: apiId
     }
     parameterValues: {
       storageAccount: storageAccountName
@@ -37,3 +40,4 @@ resource apiConnectionQueue 'Microsoft.Web/connections@2016-06-01' = {
 }
 
 output id string = apiConnectionQueue.id
+output apiId string = apiId
