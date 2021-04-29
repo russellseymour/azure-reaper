@@ -129,8 +129,11 @@ namespace Azure.Reaper.Lib
         {
             Response response = new Response();
 
-            List<T> items = new List<T>();
-            items.Add(item);
+            List<dynamic> items = new List<dynamic>();
+            foreach (var i in item)
+            {
+                items.Add(i);
+            }
 
             response = await Upsert(items);
 

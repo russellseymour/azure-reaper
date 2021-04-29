@@ -65,6 +65,10 @@ resource site 'Microsoft.Web/sites@2020-12-01' = {
           name: 'connectionString'
           value: cosmosConnectionString
         }
+        {
+          name: 'OpenApi__AuthLevel__UI'
+          value: 'Function'
+        }
       ]
     }
   }
