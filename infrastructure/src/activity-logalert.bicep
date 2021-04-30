@@ -20,7 +20,7 @@ resource logAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
   tags: tags
   properties: {
     enabled: true
-    description: 'Activity alery to watch for newly created resource groups'
+    description: 'Activity alert to watch for newly created resource groups'
     scopes: [
       subscription().id
     ]

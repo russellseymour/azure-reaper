@@ -25,7 +25,7 @@ namespace Azure.Reaper.Lib.Resources
     public string message;
     public string level;
     private DateTime timeNowUtc;
-    private Models.ActivityLog activityLog;
+    private Models.AlertContext alertContext;
 
     public Group(
       IResourceGroup resourceGroup,
@@ -53,14 +53,14 @@ namespace Azure.Reaper.Lib.Resources
       ILog logger,
       IResourceGroup resourceGroup,
       List<Setting> settings,
-      Models.ActivityLog activityLog
+      Models.AlertContext alertContext
     )
     {
       this.resourceGroup = resourceGroup;
       this._backend = backend;
       this._logger = logger;
       this.settings = settings;
-      this.activityLog = activityLog;
+      this.alertContext = alertContext;
     }
 
     /// <summary>
@@ -362,7 +362,7 @@ namespace Azure.Reaper.Lib.Resources
         if (!valueOfTag)
         {
           // Get the value from the ActivityLog
-          string value = activityLog.GetValue(compulsoryTag);
+          string value = alertContext.GetValue(compulsoryTag);
 
           _logger.Information("Adding '{tag}' tag: group", nameOfTag, GetName());
           groupTags.Add(nameOfTag, value);

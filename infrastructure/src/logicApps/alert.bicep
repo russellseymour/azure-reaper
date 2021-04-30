@@ -66,7 +66,7 @@ resource workflow 'Microsoft.Logic/workflows@2019-05-01' = {
           inputs: {
             host: {
               connection: {
-                name: '@parameters(\'$connections\')[\'azurequeue\'][\'connectionId\']'
+                name: '@parameters(\'$connections\')[\'azurequeues\'][\'connectionId\']'
               }
             }
             method: 'put'
@@ -87,7 +87,7 @@ resource workflow 'Microsoft.Logic/workflows@2019-05-01' = {
             body: '@{triggerBody()}'
             host: {
               connection: {
-                name: '@parameters(\'$connections\')[\'azurequeue\'][\'connectionId\']'
+                name: '@parameters(\'$connections\')[\'azurequeues\'][\'connectionId\']'
               }
             }
             method: 'post'

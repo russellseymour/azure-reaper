@@ -4,6 +4,6 @@ namespace Azure.Reaper.Lib.Models
 
         public string status;
 
-        public Context context;
+        public AlertContext alertContext;
     }
 }

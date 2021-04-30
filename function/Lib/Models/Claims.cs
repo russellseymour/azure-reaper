@@ -1,10 +1,10 @@
 namespace Azure.Reaper.Lib.Models
 {
-  public class ActivityLogClaims
+  public class Claims
   {
     public string name;
-
-    public ActivityLogClaims()
+    public string ipaddr;
+    public Claims()
     {
 
     }

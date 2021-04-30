@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Text;
 
 namespace Azure.Reaper
 {
@@ -95,5 +96,14 @@ namespace Azure.Reaper
 
         return result;
       }
+
+      public static string RemoveEncoding(string encodedJson)
+      {
+          var sb = new StringBuilder(encodedJson);
+          sb.Replace("\\", string.Empty);
+          sb.Replace("\"[", "[");
+          sb.Replace("]\"", "]");
+          return sb.ToString();
+      }   
   }
 }

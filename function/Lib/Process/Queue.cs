@@ -10,7 +10,7 @@ namespace Azure.Reaper.Lib.Process
     public class Queue
     {
 
-        private ActivityLog activityLog;
+        private AlertContext alertContext;
 
         private IBackend _backend;
         private ILog _logger;
@@ -23,7 +23,7 @@ namespace Azure.Reaper.Lib.Process
             _logger = logger;
 
             // Get the activityLog message from the main queue message
-            activityLog = message.data.context.activityLog;
+            alertContext = message.data.alertContext; // .context.activityLog;
         }
 
         /// <summary>
@@ -36,19 +36,20 @@ namespace Azure.Reaper.Lib.Process
         {
 
             // Only proceed if a resource group has been created
-            if (activityLog.IsCreated())
+            if (alertContext.IsCreated())
             {
 
                 // read the claims in the message
-                activityLog.ReadClaims();
+                alertContext.ReadClaims();
+                alertContext.properties.ReadResponseBody();
 
-                _logger.Information("Considering Resource Group: {name}", activityLog.resourceGroupName);
+                _logger.Information("Considering Resource Group: {name}", alertContext.GetResourceGroupName());
 
                 // Attempt to get the named subscription from the backend
                 // This is used to see if the subscription is being monitored as well as checking
                 // that reaper is enabled on it
                 Subscription sub = new Subscription(_backend, _logger);
-                Response result = sub.GetByName(activityLog.subscriptionId);
+                Response result = sub.GetByName(alertContext.GetSubscriptionId());
 
                 subscription = (Subscription) result.GetData();
 
@@ -56,11 +57,11 @@ namespace Azure.Reaper.Lib.Process
                 // and if running in dry run mode
                 if (subscription == null)
                 {
-                    _logger.Warning("Subscription is not known to Reaper: {subscription}", activityLog.subscriptionId);
+                    _logger.Warning("Subscription is not known to Reaper: {subscription}", alertContext.GetSubscriptionId());
                 }
                 else if (subscription.IsDisabled())
                 {
-                    _logger.Warning("Tagging for this subscription is not enabled: {name} [{subscriptionId}]", subscription.name, activityLog.subscriptionId);
+                    _logger.Warning("Tagging for this subscription is not enabled: {name} [{subscriptionId}]", subscription.name, alertContext.GetSubscriptionId());
                 }
                 else
                 {
@@ -71,13 +72,13 @@ namespace Azure.Reaper.Lib.Process
 
         private async void performTagging()
         {
-            _logger.Information("Attempting to tag resource group: {name}", activityLog.resourceGroupName);
+            _logger.Information("Attempting to tag resource group: {name}", alertContext.GetResourceGroupName());
 
             // Login to azure using the credentials that have been set on the subscription
             IAzure azure = Utilities.AzureLogin(subscription, AzureEnvironment.AzureGlobalCloud, _logger);
 
             // Check to see if the resource group exists in the subscription
-            bool exists = await azure.ResourceGroups.ContainAsync(activityLog.resourceGroupName);
+            bool exists = await azure.ResourceGroups.ContainAsync(alertContext.GetResourceGroupName());
 
             if (exists)
             {
@@ -90,13 +91,13 @@ namespace Azure.Reaper.Lib.Process
                 _logger.Debug("Found '{tags}' tags to be considered for the resource group", settings.Count);
 
                 // Retrieve the Resource Group object from Azure
-                IResourceGroup resourceGroup = azure.ResourceGroups.GetByName(activityLog.resourceGroupName);
+                IResourceGroup resourceGroup = azure.ResourceGroups.GetByName(alertContext.GetResourceGroupName());
                 Group rg = new Group(
                     _backend,
                     _logger,
                     resourceGroup,
                     settings,
-                    activityLog
+                    alertContext
                 );
 
                 // Add the tags to the resource group
@@ -105,7 +106,7 @@ namespace Azure.Reaper.Lib.Process
             }
             else
             {
-                _logger.Error("Unable to find resource group: {name}", activityLog.resourceGroupName);
+                _logger.Error("Unable to find resource group: {name}", alertContext.GetResourceGroupName());
             }
         }
     }
