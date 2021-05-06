@@ -40,7 +40,14 @@
     "category": "tags",
     "display_name": "Days of Week",
     "description": "Days of the week that a VM is permitted to run. 0 - Sunday, 1 - Monday etc"
-  },  
+  },
+  {
+    "name": "tag_expired",
+    "value": "EXPIRED",
+    "category": "tags",
+    "display_name": "Expired",
+    "description": "State that the resource group has expired. Just the presence of this tag is enough, the value does not matter."
+  },    
   {
     "name": "duration",
     "value": 7.0,

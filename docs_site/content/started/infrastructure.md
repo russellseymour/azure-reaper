@@ -7,7 +7,12 @@ Azure Reaper runs as an Azure function, which reads from queues and has Azure mo
 
 ![Azure Reaper Infrastructure](/images/az_reaper_infrastructure.png)
 
-The infrastructure can be deployed in one of three ways, using the Azure CLI, Azure PowerShell or Terraform.
+The infrastructure can be deployed using the Azure CLI or PowerShell. The template deploys the function version associated with the template.
+
+{{% notice note %}}
+The examples shown in the following code snippets use version {{< param "releaseVersion" >}} of Azure Reaper.
+Please replace this value if you wish to deploy a different version.
+{{% /notice %}}
 
 {{< tabs groupId="deployment">}}
 {{% tab name="Azure CLI" %}}
@@ -16,7 +21,7 @@ The infrastructure can be deployed in one of three ways, using the Azure CLI, Az
 az group create -n azure-reaper -l uksouth
 
 # Deploy the templates into the resource group
-az deployment group create -g azure-reaper -f infrastructure/azuredeploy.json -p prefix=rjs
+az deployment group create -g azure-reaper -templateUri https://{{< param "githubOrg" >}}/{{< param "repoName" >}}/releases/download/v{{< param "releaseVersion" >}}/azuredeploy.json
 ```
 {{% /tab %}}
 {{% tab name="PowerShell" %}}
@@ -25,20 +30,7 @@ az deployment group create -g azure-reaper -f infrastructure/azuredeploy.json -p
 New-AzResourceGroup -Name azure-reaper -Location uksouth
 
 # Deploy the templates into the resource group
-New-AzResourceGroupDeployment -ResourceGroupName azure-reaper -TemplateFile infrastructure/azuredeploy.json -prefix rjs
-```
-{{% /tab %}}
-{{% tab name="Terraform" %}}
-```bash
-# Change into the directory containing the templates
-cd infrastructure
-
-# Initialise terraform, to install the necessary providers
-terraform init
-
-# Plan and then run terraform
-terraform plan --var 'resource_group_name=azure_reaper'
-terraform apply --var 'resource_group_name=azure_reaper'
+New-AzResourceGroupDeployment -ResourceGroupName azure-reaper -TemplateUri https://{{< param "githubOrg" >}}/{{< param "repoName" >}}/releases/download/v{{< param "releaseVersion" >}}/azuredeploy.json
 ```
 {{% /tab %}}
 {{< /tabs >}}

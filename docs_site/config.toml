@@ -8,3 +8,14 @@ publishDir = "../docs"
 
 [params]
     customCSS = ["css/own.css"]
+    releaseVersion  = "0.6.17"
+    releaseUpgradeVersion = "0.6.18"
+    resourceGroup = "azreaper-test-15"
+    functionName = "azreaper-wlw5"
+    githubOrg = "github.com/russellseymour"
+    repoName = "azure-reaper"
+    subscriptionId = "6fbb1ea2-4874-45f8-a026-2ae5ae7e3033"
+    virtualMachine = "ubuntu-test-1"
+
+[markup.goldmark.renderer]
+unsafe = true

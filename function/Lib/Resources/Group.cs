@@ -19,7 +19,7 @@ namespace Azure.Reaper.Lib.Resources
     private List<Setting> settings;
     private NotificationDelay notificationDelay;
     private string subscriptionId;
-    private LocationTZ timezone;
+    private IEnumerable<LocationTZ> timezones;
     public string emailAddress = String.Empty;
     public DateTime expiryDate;
     public string message;
@@ -34,7 +34,7 @@ namespace Azure.Reaper.Lib.Resources
       List<Setting> settings,
       NotificationDelay notificationDelay,
       string subscriptionId,
-      LocationTZ timezone,
+      IEnumerable<LocationTZ> timezones,
       DateTime timeNowUtc
     )
     {
@@ -44,7 +44,7 @@ namespace Azure.Reaper.Lib.Resources
       this.settings = settings;
       this.notificationDelay = notificationDelay;
       this.subscriptionId = subscriptionId;
-      this.timezone = timezone;
+      this.timezones = timezones;
       this.timeNowUtc = timeNowUtc;
     }
 
@@ -292,8 +292,8 @@ namespace Azure.Reaper.Lib.Resources
         bool destroy = Convert.ToBoolean(settings.First(s => s.name == "destroy").value);
 
         // Get the timezones
-        Response response = timezone.GetByName();
-        IEnumerable<LocationTZ> timezones = response.GetData();
+        // Response response = timezone.GetByName();
+        // IEnumerable<LocationTZ> timezones = response.GetData();
 
         if (HasTag("tag_date"))
         {
@@ -305,7 +305,8 @@ namespace Azure.Reaper.Lib.Resources
           expiryDate = rgCreateDateUtc.AddDays(rgLifetimeDuration);
 
           // compare the expiry date against the time now to determine if it is expired
-          if (timeNowUtc > expiryDate)
+          // or if the group has the expired tag
+          if (timeNowUtc > expiryDate || HasTag("tag_expired"))
           {
             result = true && destroy;
 
@@ -317,7 +318,7 @@ namespace Azure.Reaper.Lib.Resources
             }
             else
             {
-              message = "Your resource group has expired and would be delete. Reaper is not running in destructive mode";
+              message = "Your resource group has expired and would be deleted. Reaper is not running in destructive mode";
               level = "warning";
             }
           }

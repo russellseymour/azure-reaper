@@ -82,7 +82,7 @@ namespace Azure.Reaper.Lib.Process
 
             // Create an instance of the reaper and process it
             Reaper reaper = new Reaper(_backend, _logger, notificationDelay);
-            await reaper.Process(settings, subscriptions, locationTZ);
+            reaper.Process(settings, subscriptions, locationTZ);
         }
     }
 }

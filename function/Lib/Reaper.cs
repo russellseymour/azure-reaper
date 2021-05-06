@@ -32,7 +32,7 @@ namespace Azure.Reaper.Lib
             _notificationDelay = notificationDelay;
         }
 
-        public async Task<bool> Process(List<Models.Setting> settings, List<Models.Subscription> subscriptions, Models.LocationTZ locationTZ)
+        public bool Process(List<Models.Setting> settings, List<Models.Subscription> subscriptions, Models.LocationTZ locationTZ)
         {
 
             // bool error = false;
@@ -46,6 +46,9 @@ namespace Azure.Reaper.Lib
             
             bool destroy = Convert.ToBoolean(settings.First(s => s.name == "destroy").value);
             bool manage_vms = Convert.ToBoolean(settings.First(s => s.name == "manage_vms").value);
+
+            // get a list of the timezones to work with
+            IEnumerable<LocationTZ> timezones = locationTZ.GetByName().GetData();
 
             // Create a connection to Slack
             // ensure that the webhook url can be turned into a URI
@@ -130,7 +133,7 @@ namespace Azure.Reaper.Lib
                             settings,
                             _notificationDelay,
                             sub.subscription_id,
-                            locationTZ,
+                            timezones,
                             timeNowUtc
                         );
 
@@ -145,7 +148,7 @@ namespace Azure.Reaper.Lib
                             expired.ToString()
                         );
 
-                        // if resource group has expired delete it
+                        /*
                         if (notify)
                         {
                             // Attempt to get the slack userid for the email address
@@ -170,12 +173,13 @@ namespace Azure.Reaper.Lib
 
                             await _notificationDelay.Upsert(nd);
                         }
+                        */
 
                         // If the group has expired, delete it
                         // Otherwise work out what machines need to be powered on or off
                         if (expired) 
                         {
-                            await azure.ResourceGroups.DeleteByNameAsync(resource_group.Name);
+                            azure.ResourceGroups.DeleteByNameAsync(resource_group.Name);
                         }
                         else
                         {
@@ -199,7 +203,7 @@ namespace Azure.Reaper.Lib
                                     settings,
                                     _notificationDelay,
                                     rg,
-                                    locationTZ,
+                                    timezones,
                                     timeNowUtc
                                 );
 
@@ -218,6 +222,7 @@ namespace Azure.Reaper.Lib
                                 }
 
                                 // Add a notification for this machine
+                                /*
                                 NotificationDelay nd = new NotificationDelay();
                                 nd.subscription_id = sub.subscription_id;
                                 nd.group_name = resource_group.Name;
@@ -225,6 +230,7 @@ namespace Azure.Reaper.Lib
                                 nd.name = virtualMachine.GetName();
 
                                 await _notificationDelay.Upsert(nd);
+                                */
                                 
                             }
 

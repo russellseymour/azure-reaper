@@ -20,7 +20,7 @@ namespace Azure.Reaper.Lib.Resources
     private IEnumerable<LocationTZ> timezones;
     private string startTime;
     private string stopTime;
-    private Regex pattern = new Regex("[0-2]([0-9]{3}) *- *[0-2]([0-9]{3})");
+    private Regex pattern = new Regex(@"((?:[01]\d|2[0-3]):?(?:[0-5]\d))\s*?-\s*?((?:[01]\d|2[0-3]):?(?:[0-5]\d))");
     private TimeZoneInfo zoneInfo = TimeZoneInfo.Utc;
     private bool permittedToRunOnDay;
 
@@ -35,7 +35,7 @@ namespace Azure.Reaper.Lib.Resources
       IEnumerable<Setting> settings,
       NotificationDelay notificationDelay,
       Group resourceGroup,
-      LocationTZ timezone,
+      IEnumerable<LocationTZ> timezones,
       DateTime timeNowUtc
     )
     {
@@ -45,14 +45,12 @@ namespace Azure.Reaper.Lib.Resources
       this.settings = settings;
       this.notificationDelay = notificationDelay;
       this.resourceGroup = resourceGroup;
-      this.timezones = timezone.GetByName().GetData();
+      this.timezones = timezones; // timezone.GetByName().GetData();
       this.timeNowUtc = timeNowUtc;
 
       // Using the settings, set the start and stop time for the vm
       startTime = settings.First(s => s.name == "vm_start").value;
       stopTime = settings.First(s => s.name == "vm_stop").value;
-
-      SetPowerState();
     }
 
     public bool ShouldBeRunning()
@@ -77,6 +75,7 @@ namespace Azure.Reaper.Lib.Resources
       DateTime timeNowZone = TimeZoneInfo.ConvertTimeFromUtc(timeNowUtc, zoneInfo);
 
       // Perform test to determine if the machine should be running or not
+      PermittedToRunDay(this.timeNowUtc);
       if ((timeNowZone.TimeOfDay > tsStart) && (timeNowZone.TimeOfDay < tsStop) && permittedToRunOnDay)
       {
         result = true;
@@ -112,14 +111,14 @@ namespace Azure.Reaper.Lib.Resources
         if (isRunning && !permitted && manage_vm)
         {
           logger.Information("{0} - {1}: Stopping virtual machine", resourceGroup.GetName(), GetName());
-          virtualMachine.Deallocate();
+          virtualMachine.DeallocateAsync(); // Deallocate();
           status = Status.Stopped;
         }
 
         if (!isRunning && permitted && manage_vm)
         {
           logger.Information("{0} - {1}: Starting virtual machine", resourceGroup.GetName(), GetName());
-          virtualMachine.Start();
+          virtualMachine.StartAsync(); // Start();
           status = Status.Started;
         }
       }
@@ -139,14 +138,28 @@ namespace Azure.Reaper.Lib.Resources
     /// </summary>
     /// <param name="name"></param>
     /// <returns>dynamic</returns>
-    public dynamic HasTag(string name)
+    public bool HasTag(string name)
     {
       dynamic result = false;
       string tagName =  settings.First(s => s.name == name).value;
 
       if (virtualMachine.Tags.ContainsKey(tagName))
       {
-        result = tagName;
+        result = true;
+      }
+
+      return result;
+    }
+
+    public string GetTag(string name)
+    {
+      string result = String.Empty;
+
+      // Determine that the tag exists
+      if (HasTag(name))
+      {
+        string tagName =  settings.First(s => s.name == name).value;
+        result = virtualMachine.Inner.Tags[tagName];
       }
 
       return result;
@@ -178,7 +191,7 @@ namespace Azure.Reaper.Lib.Resources
         hasTag = HasTag("tag_vm_start_stop_time");
         if (hasTag)
         {
-          tagSchedule = resourceGroup.GetTag("tag_vm_start_stop_time");
+          tagSchedule = GetTag("tag_vm_start_stop_time");
           message = String.Format("{0} - {1}: VM power state schedule found on virtual machine: {2}", resourceGroup.GetName(), GetName(), (string) tagSchedule);
         }
       }
@@ -192,8 +205,9 @@ namespace Azure.Reaper.Lib.Resources
           string[] parts = tagSchedule.Split('-').ToArray();
 
           // use the parts from the string to set the times
-          startTime = parts[0].Trim();
-          stopTime = parts[1].Trim();
+          // remove any colons that maybe present in the string
+          startTime = parts[0].Trim().Replace(":", "");
+          stopTime = parts[1].Trim().Replace(":", "");
         }
         else
         {

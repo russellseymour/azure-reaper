@@ -19,7 +19,7 @@ In order to access the API, the function key needs to be retrieved, please refer
 The easiest way to upload the necessary items is to use the command line. The following examples show how this can be done using both `curl` and `powershell`.
 
 {{% notice note %}}
-In both cases a dummy API token is being used for the authentication. The URL for the Azure Reaper endpoint will depend on where the function was deployed to and the parameters that were used
+In both cases a dummy API token is being used for the authentication. The URL for the Azure Reaper endpoint will depend on where the function was deployed to and the parameters that were used.
 {{% /notice %}}
 
 {{< tabs groupId="settings">}}
@@ -33,32 +33,32 @@ curl https://github.com/russellseymour/azure-reaper/azure-reaper/master/data/tim
 curl -H "x-functions-key: functiontoken123!" \
      -X POST \
      -d @settings.json \
-     https://azure-reaper.azurewebsites.net/ops/settings
+     https://azure-reaper.azurewebsites.net/api/v1/settings
 
 # Upload the timezones to the API
 curl -H "x-functions-key: functiontoken123!" \
      -X POST \
      -d @timezones.json \
-     https://azure-reaper.azurewebsites.net/ops/timezones
+     https://azure-reaper.azurewebsites.net/api/v1/timezones
 ```
 {{% /tab %}}
 {{% tab name="PowerShell" %}}
 ```powershell
 # Download the two files to the local machine
-Invoke-RestMethod -Uri https://github.com/russellseymour/azure-reaper/master/data/settings.json/master/data/settings.json -OutFile settings.json
-Invoke-RestMethod -Uri https://github.com/russellseymour/azure-reaper/master/data/settings.json/master/data/timezones.json -OutFile timezones.json
+Invoke-RestMethod -Uri https://github.com/russellseymour/azure-reaper/master/data/settings.json -OutFile settings.json
+Invoke-RestMethod -Uri https://github.com/russellseymour/azure-reaper/master/data/timezones.json -OutFile timezones.json
 
 # Upload the settings to the API
 Invoke-RestMethod -Method POST `
                   -Headers @{"x-functions-key": "functiontoken123!"} `
                   -Body (Get-Content -Path settings.json -raw) `
-                  -Uri "https://azure-reaper.azurewebsites.net/ops/settings"
+                  -Uri "https://azure-reaper.azurewebsites.net/api/v1/settings"
 
 # Upload the timezones to the API
 Invoke-RestMethod -Method POST `
                   -Headers @{"x-functions-key": "functiontoken123!"} `
                   -Body (Get-Content -Path timezones.json -raw) `
-                  -Uri "https://azure-reaper.azurewebsites.net/ops/timezones"
+                  -Uri "https://azure-reaper.azurewebsites.net/api/v1/timezones"
 
 ```
 {{% /tab %}}
