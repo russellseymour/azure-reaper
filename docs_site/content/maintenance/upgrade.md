@@ -34,7 +34,7 @@ az functionapp deployment source config-zip -g {{< param "resourceGroup" >}} -n 
 {{% tab name="PowerShell" %}}
 ```powershell
 # Download the function zip file from the release page
-Invoke-RestMethod -Uri https://{{< param "githubOrg" >}}/{{< param "repoName" >}}/releases/download/{{< param "releaseUpgradeVersion" >}}/azure-reaper-{{< param "releaseUpgradeVersion" >}}.zip -Outfile azure-reaper-{{< param "releaseUpgradeVersion" >}}.zip
+Invoke-RestMethod -Uri https://{{< param "githubOrg" >}}/{{< param "repoName" >}}/releases/download/v{{< param "releaseUpgradeVersion" >}}/azure-reaper-{{< param "releaseUpgradeVersion" >}}.zip -Outfile azure-reaper-{{< param "releaseUpgradeVersion" >}}.zip
 
 # Ensure logged into Azure
 Connect-AZAccount

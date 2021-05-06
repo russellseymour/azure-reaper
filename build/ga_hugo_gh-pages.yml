@@ -43,10 +43,11 @@ jobs:
     # Also specifies the theme we want to use
     - name: Build
       run: hugo
+      working-directory: docs_site/
 
     # Step 5 - Create name file
     - name: Create cname file
-      run: echo 'azurereaper.com' > public/CNAME
+      run: echo 'azurereaper.com' > docs/CNAME
 
     # Step 6 - Push our generated site to our gh-pages branch
     - name: Deploy
