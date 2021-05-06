@@ -42,7 +42,7 @@ The Reaper function can also be triggered manually nby using the API.
 
 All of the configuration for Reaper is stored in a storage account using the Azure CosmosDB API. These settings can be managed using the Reaper API. It also has a Swagger UI.
 
-
+![Swagger UI](/images/swagger.png)
 
 Additional functions, such as the Reaper, can be called on an ad-hoc basis.
 {{% /column %}}
