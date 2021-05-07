@@ -1,0 +1,126 @@
+name: 0.6$(Rev:.r)
+
+# Define variables
+variables:
+  buildImage: ubuntu-20.04
+  buildOutputDir: $(Build.SourcesDirectory)/output
+  functionOutputDir: $(buildOutputDir)/function
+  archiveFilename: azure-reaper-$(Build.BuildNumber).zip
+  archiveSrcZipFilename: azure-reaper-src-$(Build.BuildNumber).zip
+  archiveSrcTarFilename: azure-reaper-src-$(Build.BuildNumber).tar.gz
+  releaseArtefactsDir: $(Build.SourcesDirectory)/build_artefacts
+
+  # configure the URI to the zip file that needs to be used in the deployment
+  # this will be patched in the built template file
+  releaseZipUrl: $(Build.Repository.Uri)/releases/download/v$(Build.BuildNumber)/azure-reaper-$(Build.BuildNumber).zip
+
+stages:
+
+  - stage: build_reaper_function
+    displayName: Build Azure Reaper
+
+    jobs:
+
+      - job: build
+        displayName: Build
+        pool:
+          vmImage: $(buildImage)
+
+        steps:
+
+          # Compile the function and output to a directory
+          - task: DotNetCoreCLI@2
+            displayName: Compile function
+            inputs:
+              projects: '$(Build.SourcesDirectory)/function/*.csproj'
+              arguments: '--output $(functionOutputDir) --configuration Release'
+              # workingDirectory: $(Build.SourcesDirectory)/function
+
+          # Package the src code
+          # - Zip file
+          - task: ArchiveFiles@2
+            displayName: Package source code - zip
+            inputs:
+              rootFolderOrFile: $(Build.SourcesDirectory)/function
+              includeRootFolder: false
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(archiveSrcZipFilename)
+
+          # - Tar file
+          - task: ArchiveFiles@2
+            displayName: Package source code - tar
+            inputs:
+              rootFolderOrFile: $(Build.SourcesDirectory)/function
+              includeRootFolder: false
+              archiveType: tar
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(archiveSrcTarFilename)
+
+          # Package the compiled function into a zip file
+          - task: ArchiveFiles@2
+            displayName: Package function
+            inputs:
+              rootFolderOrFile: $(functionOutputDir)
+              includeRootFolder: false
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(archiveFileName)
+
+          # Install Bicep
+          - task: BicepInstall@0
+            displayName: Install Bicep
+            inputs:
+              version: 0.3.255
+
+          # Build the bicep file into an ARM template
+          - task: BicepBuild@0
+            displayName: Build Bicep template
+            inputs:
+              process: single
+              sourceFile: $(Build.SourcesDirectory)/infrastructure/azuredeploy.bicep
+              stdout: false
+              outputDirectory: $(Build.ArtifactStagingDirectory)
+
+          # Patch the JSON template file with the releaseZipUrl
+          - task: geeklearningio.gl-vsts-tasks-file-patch.json-patch-task.JsonPatch@4
+            displayName: 'Patch ARM template with release zip file URL'
+            inputs:
+              JsonWorkingDir: $(Build.ArtifactStagingDirectory)
+              JsonTargetFilters: azuredeploy.json
+              JsonPatchContent: '+ /parameters/packageUri/defaultValue => "$(releaseZipUrl)"'
+
+          # Publish the artefact
+          - task: PublishPipelineArtifact@1
+            displayName: Publish zip files and ARM template
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: drop
+
+  - stage: release_build_artefacts
+    displayName: Create GitHub release
+    dependsOn: build_reaper_function
+
+    jobs:
+      
+      - job: release
+        displayName: Uplaod Artefacts
+        pool:
+          vmImage: $(buildImage)
+
+        steps:
+
+          - task: DownloadPipelineArtifact@2
+            displayName: Download Build Artefacts
+            inputs:
+              artifact: drop
+              path: $(releaseArtefactsDir)
+
+          - task: GitHubRelease@1
+            displayName: Create Release in GitHub
+            inputs:
+              gitHubConnection: russellseymour_github
+              repositoryName: $(Build.Repository.Name)
+              action: create
+              assets: $(releaseArtefactsDir)/*
+              tagSource: userSpecifiedTag
+              tag: v$(Build.BuildNumber)
+              title: v$(Build.BuildNumber)
+
+
+    
