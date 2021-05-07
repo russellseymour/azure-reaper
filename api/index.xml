@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>API on Azure Reaper</title>
+    <link>http://example.org/api/</link>
+    <description>Recent content in API on Azure Reaper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 Apr 2021 14:50:07 +0100</lastBuildDate><atom:link href="http://example.org/api/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Authentication</title>
+      <link>http://example.org/api/authentication/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/api/authentication/</guid>
+      <description>Authentication is required whenever accessing the AZReaper API so that it cannot be accessed without authorization. When accessing the API, authentication is required. This has to be set on the request using the x-functions-key header value. This value can be retrieved using the Azure Portal or from the command line using the Key Management API.
+Azure Portal To get this navigate to the deployed application in the portal and select &amp;lsquo;App Keys&amp;rsquo; from the left hand navigation.</description>
+    </item>
+    
+    <item>
+      <title>Swagger</title>
+      <link>http://example.org/api/swagger/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/api/swagger/</guid>
+      <description>Swagger has been built into the function so it is possible to see what all the endpoints are.
+The Swagger UI can be accessed using the URL https://azreaper-wlw5.azurewebsites.net/api/swagger.</description>
+    </item>
+    
+  </channel>
+</rss>

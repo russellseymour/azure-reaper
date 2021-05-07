@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.83.1" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Function Upgrade :: Azure Reaper</title>
+
+    
+    <link href="/css/nucleus.css?1620387804" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1620387804" rel="stylesheet">
+    <link href="/css/hybrid.css?1620387804" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1620387804" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1620387804" rel="stylesheet">
+    <link href="/css/auto-complete.css?1620387804" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1620387804" rel="stylesheet">
+    <link href="/css/theme.css?1620387804" rel="stylesheet">
+    <link href="/css/tabs.css?1620387804" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1620387804" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1620387804"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+<link rel="stylesheet" href="/css/own.css">
+  </head>
+  <body class="" data-url="/maintenance/upgrade/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <img src="/images/azreaper.svg" />
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1620387804"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1620387804"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/example.org\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1620387804"></script>
+
+    
+  </div>
+  
+    <section id="homelinks">
+      <ul>
+        <li>
+            <a class="padding" href='/'><i class='fas fa-home'></i> Home</a>
+        </li>
+      </ul>
+    </section>
+  
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/started/" title="Getting Started" class="dd-item
+        
+        
+        
+        ">
+      <a href="/started/">
+          <i class="fas fa-play"></i> Getting Started
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/started/infrastructure/" title="Infrastructure" class="dd-item ">
+        <a href="/started/infrastructure/">
+        Infrastructure
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/started/settings/" title="Settings" class="dd-item ">
+        <a href="/started/settings/">
+        Settings
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/started/subscriptions/" title="Subscriptions" class="dd-item ">
+        <a href="/started/subscriptions/">
+        Subscriptions
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/started/tags/" title="Tags" class="dd-item ">
+        <a href="/started/tags/">
+        Tags
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/maintenance/" title="Maintenance" class="dd-item
+        parent
+        
+        
+        ">
+      <a href="/maintenance/">
+          <i class="fas fa-cog"></i> Maintenance
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/maintenance/tags/" title="Setting Tags" class="dd-item ">
+        <a href="/maintenance/tags/">
+        Setting Tags
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/maintenance/upgrade/" title="Function Upgrade" class="dd-item active">
+        <a href="/maintenance/upgrade/">
+        Function Upgrade
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/api/" title="API" class="dd-item
+        
+        
+        
+        ">
+      <a href="/api/">
+          <i class='fas fa-rocket'></i> API
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/api/authentication/" title="Authentication" class="dd-item ">
+        <a href="/api/authentication/">
+        Authentication
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/api/swagger/" title="Swagger" class="dd-item ">
+        <a href="/api/swagger/">
+        Swagger
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+      
+    </li>
+  
+ 
+
+          
+        
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Azure Reaper</a> > <a href='/maintenance/'>Maintenance</a> > Function Upgrade
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#sample-output">Sample Output</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Function Upgrade
+            </h1>
+          
+
+        
+
+
+<p>New releases of Azure Reaper will be made available periodically which will provide bug fixes and new features. It is recommended that the releases are monitored to determine if an upgrade is necessary.</p>
+<p>The commands shown here will upgrade the function to version 0.6.18. In order to perform the upgrade the following information is required. (The values in brackets are the ones that are used in the example commands).</p>
+<ul>
+<li>Resource Group (<code>azreaper-test-15</code>) - name of the resource group that Azure Reaper has been deployed into.</li>
+<li>Function Name (<code>azreaper-wlw5</code>) - name of the Azure function where the code is deployed to.</li>
+</ul>
+
+<div class="notices note" ><p>The commands shown here <em>only</em> upgrade the code running in the Azure Function and do not touch any of the architecture. This means that Azure Reaper can be upgrade in situ without loosing existing settings or subscriptions.</p>
+</div>
+
+
+
+<div class="tab-panel">
+    <div class="tab-nav">
+    
+        <button
+          data-tab-item="Azure CLI"
+          data-tab-group="deployment"
+          class="tab-nav-button btn active"
+          onclick="switchTab('deployment','Azure CLI')"
+         >Azure CLI</button>
+    
+        <button
+          data-tab-item="PowerShell"
+          data-tab-group="deployment"
+          class="tab-nav-button btn "
+          onclick="switchTab('deployment','PowerShell')"
+         >PowerShell</button>
+    
+    </div>
+    <div class="tab-content">
+        
+        <div data-tab-item="Azure CLI" data-tab-group="deployment" class="tab-item active">
+            <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Download the function zip file from the release page</span>
+curl https://github.com/russellseymour/azure-reaper/releases/download/0.6.18/azure-reaper-0.6.18.zip -o azure-reaper-0.6.18.zip
+
+<span style="color:#75715e"># Ensure logged into Azure</span>
+az login
+
+<span style="color:#75715e"># Deploy the updated function</span>
+az functionapp deployment source config-zip -g azreaper-test-15 -n azreaper-wlw5 --src azure-reaper-0.6.18.zip
+</code></pre></div>
+        </div>
+        
+        <div data-tab-item="PowerShell" data-tab-group="deployment" class="tab-item ">
+            <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#75715e"># Download the function zip file from the release page</span>
+Invoke-RestMethod -Uri https<span style="color:#960050;background-color:#1e0010">:</span>//github.com/russellseymour/azure-reaper/releases/download/v0.6.18/azure-reaper-0.6.18.zip -Outfile azure-reaper-0.6.18.zip
+
+<span style="color:#75715e"># Ensure logged into Azure</span>
+Connect-AZAccount
+
+<span style="color:#75715e"># Deploy the updated function</span>
+Publish-AzWebApp -ResourceGroupName azreaper-test-15 -Name azreaper-wlw5 -ArchivePath azure-reaper-0.6.18.zip
+</code></pre></div>
+        </div>
+        
+    </div>
+</div>
+
+<h2 id="sample-output">Sample Output</h2>
+<p>The following screen shot shows the type of output to be expected from the command.</p>
+<figure><img src="/images/function_deploy_az_cli.png"/><figcaption>
+            <h4>Sample Output</h4>
+        </figcaption>
+</figure>
+
+
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/maintenance/tags/" title="Setting Tags"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/api/" title="API" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1620387804"></script>
+    <script src="/js/perfect-scrollbar.min.js?1620387804"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1620387804"></script>
+    <script src="/js/jquery.sticky.js?1620387804"></script>
+    <script src="/js/featherlight.min.js?1620387804"></script>
+    <script src="/js/highlight.pack.js?1620387804"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1620387804"></script>
+    <script src="/js/learn.js?1620387804"></script>
+    <script src="/js/hugo-learn.js?1620387804"></script>
+    
+        
+            <script src="/mermaid/mermaid.js?1620387804"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+
+  </body>
+</html>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Getting Started on Azure Reaper</title>
+    <link>http://example.org/started/</link>
+    <description>Recent content in Getting Started on Azure Reaper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Apr 2021 14:24:54 +0100</lastBuildDate><atom:link href="http://example.org/started/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Infrastructure</title>
+      <link>http://example.org/started/infrastructure/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/started/infrastructure/</guid>
+      <description>Azure Reaper runs as an Azure function, which reads from queues and has Azure monitoring to inform when a new resource group has been created. The following diagram shows what needs to be deployed.
+The infrastructure can be deployed using the Azure CLI or PowerShell. The template deploys the function version associated with the template.
+The examples shown in the following code snippets use version 0.6.17 of Azure Reaper. Please replace this value if you wish to deploy a different version.</description>
+    </item>
+    
+    <item>
+      <title>Settings</title>
+      <link>http://example.org/started/settings/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/started/settings/</guid>
+      <description>Reaper depends on a few settings. All of the settings are stored in the backend CosmosDB database, and some of them can be overridden by tags on the resource. Upload API Settings Once the deployment has been completed the Reaper needs to be configured with some default settings. A lot of these settings can be overridden using the user tags, but when these do not occur on a resource group there has to be a value that Reaper can use.</description>
+    </item>
+    
+    <item>
+      <title>Subscriptions</title>
+      <link>http://example.org/started/subscriptions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/started/subscriptions/</guid>
+      <description>A list of subscriptions that Reaper can work on has to be supplied. This is done by POST&amp;rsquo;ing to the API. In order to Reaper to be able to tag and reap resources, it needs to be able to access the subscription in which the resource group has been created. To do this is needs to have an SPN to login with.
+Currently the SPN details are held in the deployed CosmosDB in clear text.</description>
+    </item>
+    
+    <item>
+      <title>Tags</title>
+      <link>http://example.org/started/tags/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/started/tags/</guid>
+      <description>Tags are at the heart of how Azure Reaper operates. Although there are settings that govern globally how resource groups and virtual machines will be managed, the use of tags can customise this behaviour.
+Default Tags The following tags are added to a resource group when it is created.
+   Tag Description Example     createdDate UTC Datestamp of when the group was created 2021-05-04T13:27:01Z   owner Name of the person that created the group Russell Seymour   ownerEmail Email address of the owner russell.</description>
+    </item>
+    
+  </channel>
+</rss>
