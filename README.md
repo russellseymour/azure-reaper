@@ -7,7 +7,7 @@ This repository contains the infrastructure templates for setting up the necessa
 
 ## Documentation
 
-The main documentation can be found online at https://russellseymour.github.io/azure-reaper.
+The main documentation can be found online at https://www.azurereaper.com.
 
 The raw documentation is located in the `docs_site` directory. This folder contains the files required to generate the external website using [Hugo](https://gohugo.io).
 
