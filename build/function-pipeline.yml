@@ -38,10 +38,11 @@ stages:
 
           # Install Report Generator tool
           - task: DotNetCoreCLI@2
-            displayName: Restore Packages
+            displayName: Install ReportGenerator Tool
             inputs:
-              command: restore
-              projects: '$(Build.SourcesDirectory)/tests/*.csproj'
+              command: custom
+              custom: tool
+              arguments: install dotnet-reportgenerator-globaltool -g
 
           # Generate a report for the code coverga
           - task: DotNetCoreCLI@2
