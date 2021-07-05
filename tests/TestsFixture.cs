@@ -3,7 +3,7 @@ using Azure.Reaper.Lib.Interfaces;
 using Azure.Reaper.Lib.Models;
 using System;
 using System.Collections.Generic;
-using Xunit;
+// using Xunit;
 
 public class TestsFixture : IDisposable
 {

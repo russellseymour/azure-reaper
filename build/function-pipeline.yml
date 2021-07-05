@@ -28,26 +28,35 @@ stages:
 
         steps:
 
-          # Build the tests solution
+          # Run the tests
           - task: DotNetCoreCLI@2
-            displayName: Compile Unit Tests
+            displayName: Execute Unit Tests
             inputs:
+              command: test
+              arguments: --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/Coverage/
               projects: '$(Build.SourcesDirectory)/tests/*.csproj'
 
-          # Run unit tests
-          - task: VSTest@2
-            displayName: Run Unit Tests
-            inputs: 
-              testAssemblyVer2: |
-                $(Build.SourcesDirectory)/tests/**/*Tests*.dll
-                !$(Build.SourcesDirectory)/tests/**/*Models*.dll
-                !**\*TestAdapter.dll
-                !**\obj\**
-                !**\$(BuildConfiguration)\**\*IntegrationTests*.dll
-              codeCoverageEnabled: true
-              testRunTitle: '$(Build.DefinitionName) | $(Build.Reason) |$(Build.SourceVersion)'
-              platform: '$(buildPlatform)'
-              configuration: '$(buildConfiguration)'
+          # Generate a report for the code coverga
+          - task: DotNetCoreCLI@2
+            displayName: Generate Coverage Report
+            inputs:
+              command: custom
+              custom: reportgenerator
+              arguments: -reports:TestResults/Coverage/coverage.cobertura.xml -targetDir:TestResults/Coverage/Reports -tag:$(Build.BuildNumber) -reportTypes:inlinehtml 
+
+          # Publish test and code coverage results
+          - task: PublishTestResults@2
+            inputs:
+              testRunner: VSTest
+              testResultsFiles: '**/TestResults/*.trx'
+              failTaskOnFailedTests: true
+
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'cobertura'
+              summaryFileLocation: $(Build.SourcesDirectory)/tests/TestResults/Coverage/**/coverage.cobertura.xml
+              reportDirectory: $(Build.SourcesDirectory)/tests/TestResults/Coverage/Reports
+              failIfCoverageEmpty: false 
 
           # Compile the function and output to a directory
           - task: DotNetCoreCLI@2
