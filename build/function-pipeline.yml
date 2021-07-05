@@ -48,7 +48,10 @@ stages:
               arguments: --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/Coverage/
               projects: '$(Build.SourcesDirectory)/tests/*.csproj'
 
-          # Generate a report for the code coverga
+          # Generate a report for the code coverage
+          - script: reportgenerator -reports:TestResults/Coverage/coverage.cobertura.xml -targetDir:TestResults/Coverage/Reports -tag:$(Build.BuildNumber) -reportTypes:inlinehtml 
+            displayName: Generate Coverage Report
+
           - task: DotNetCoreCLI@2
             displayName: Generate Coverage Report
             inputs:
