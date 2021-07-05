@@ -45,32 +45,19 @@ stages:
             displayName: Execute Unit Tests
             inputs:
               command: test
-              arguments: --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/Coverage/
+              arguments: --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/
               projects: '$(Build.SourcesDirectory)/tests/*.csproj'
 
           # Generate a report for the code coverage
-          - script: reportgenerator -reports:TestResults/Coverage/coverage.cobertura.xml -targetDir:TestResults/Coverage/Reports -tag:$(Build.BuildNumber) -reportTypes:inlinehtml 
+          - script: reportgenerator -reports:$(Build.SourcesDirectory)/TestResults/Coverage/coverage.cobertura.xml -targetDir:$(Build.SourcesDirectory)/TestResults/Coverage/Reports -tag:$(Build.BuildNumber) -reportTypes:htmlInline
             displayName: Generate Coverage Report
-
-          - task: DotNetCoreCLI@2
-            displayName: Generate Coverage Report
-            inputs:
-              command: custom
-              custom: reportgenerator 
-              arguments: -reports:TestResults/Coverage/coverage.cobertura.xml -targetDir:TestResults/Coverage/Reports -tag:$(Build.BuildNumber) -reportTypes:inlinehtml 
-
-          # Publish test and code coverage results
-          - task: PublishTestResults@2
-            inputs:
-              testRunner: VSTest
-              testResultsFiles: '**/TestResults/*.trx'
-              failTaskOnFailedTests: true
-
+            
+          # Publish code coverage results
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'cobertura'
-              summaryFileLocation: $(Build.SourcesDirectory)/tests/TestResults/Coverage/**/coverage.cobertura.xml
-              reportDirectory: $(Build.SourcesDirectory)/tests/TestResults/Coverage/Reports
+              summaryFileLocation: $(Build.SourcesDirectory)/TestResults/Coverage/**/coverage.cobertura.xml
+              reportDirectory: $(Build.SourcesDirectory)/TestResults/Coverage/Reports
               failIfCoverageEmpty: false 
 
           # Compile the function and output to a directory
