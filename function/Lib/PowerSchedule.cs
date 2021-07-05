@@ -269,7 +269,8 @@ namespace Azure.Reaper.Lib
                 zoneId = resourceZone.tzId;
             }
 
-            zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
+            // zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
+            zoneInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(zoneId);
 
             // work out the offset to be used for calculating times, based on the 
             // specified timezone of the resource

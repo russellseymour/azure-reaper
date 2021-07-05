@@ -159,7 +159,8 @@ namespace Tests
             powerSchedule.SetTimeZone();
 
             // ensure that the zoneInfo is correctly set
-            TimeZoneInfo zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(TIMEZONE);
+            // TimeZoneInfo zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(TIMEZONE);
+            TimeZoneInfo zoneInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(TIMEZONE);
             Assert.Equal(zoneInfo, powerSchedule.zoneInfo);
         }
 
@@ -192,7 +193,8 @@ namespace Tests
             powerSchedule.SetTimeZone();
 
             // ensure that the zoneInfo is correctly set
-            TimeZoneInfo zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(TEST_TIMEZONE_ID);
+            // TimeZoneInfo zoneInfo = TimeZoneInfo.FindSystemTimeZoneById(TEST_TIMEZONE_ID);
+            TimeZoneInfo zoneInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(TEST_TIMEZONE_ID);
             Assert.Equal(zoneInfo, powerSchedule.zoneInfo);
         }
 
