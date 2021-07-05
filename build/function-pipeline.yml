@@ -28,14 +28,6 @@ stages:
 
         steps:
 
-          # Run the tests
-          - task: DotNetCoreCLI@2
-            displayName: Execute Unit Tests
-            inputs:
-              command: test
-              arguments: --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/Coverage/
-              projects: '$(Build.SourcesDirectory)/tests/*.csproj'
-
           # Install Report Generator tool
           - task: DotNetCoreCLI@2
             displayName: Install ReportGenerator Tool
@@ -43,6 +35,18 @@ stages:
               command: custom
               custom: tool
               arguments: install dotnet-reportgenerator-globaltool -g
+
+          # Add the dotnet tools dir to the path
+          - script: echo "##vso[task.prependpath]$HOME/.dotnet/tools"
+            displayName: Add DotNet custom tools to the path
+
+          # Run the tests
+          - task: DotNetCoreCLI@2
+            displayName: Execute Unit Tests
+            inputs:
+              command: test
+              arguments: --logger "trx;LogFileName=testresults.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=TestResults/Coverage/
+              projects: '$(Build.SourcesDirectory)/tests/*.csproj'
 
           # Generate a report for the code coverga
           - task: DotNetCoreCLI@2
