@@ -28,6 +28,27 @@ stages:
 
         steps:
 
+          # Build the tests solution
+          - task: DotNetCoreCLI@2
+            displayName: Compile Unit Tests
+            inputs:
+              projects: '$(Build.SourcesDirectory)/tests/*.csproj'
+
+          # Run unit tests
+          - task: VSTest@2
+            displayName: Run Unit Tests
+            inputs: 
+              testAssemblyVer2: |
+                $(Build.SourcesDirectory)/tests/**/*Tests*.dll
+                !$(Build.SourcesDirectory)/tests/**/*Models*.dll
+                !**\*TestAdapter.dll
+                !**\obj\**
+                !**\$(BuildConfiguration)\**\*IntegrationTests*.dll
+              codeCoverageEnabled: true
+              testRunTitle: '$(Build.DefinitionName) | $(Build.Reason) |$(Build.SourceVersion)'
+              platform: '$(buildPlatform)'
+              configuration: '$(buildConfiguration)'
+
           # Compile the function and output to a directory
           - task: DotNetCoreCLI@2
             displayName: Compile function
