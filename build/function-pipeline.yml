@@ -51,7 +51,7 @@ stages:
           # Generate a report for the code coverage
           - script: reportgenerator -reports:$(Build.SourcesDirectory)/TestResults/Coverage/coverage.cobertura.xml -targetDir:$(Build.SourcesDirectory)/TestResults/Coverage/Reports -tag:$(Build.BuildNumber) -reportTypes:htmlInline
             displayName: Generate Coverage Report
-            
+
           # Publish code coverage results
           - task: PublishCodeCoverageResults@1
             inputs:
@@ -126,12 +126,13 @@ stages:
 
   - stage: release_build_artefacts
     displayName: Create GitHub release
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     dependsOn: build_reaper_function
 
     jobs:
       
       - job: release
-        displayName: Uplaod Artefacts
+        displayName: Upload Artefacts
         pool:
           vmImage: $(buildImage)
 
