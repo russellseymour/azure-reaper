@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.83.1" />
+    <meta name="generator" content="Hugo 0.85.0" />
     <meta name="description" content="">
 
 
@@ -12,20 +12,20 @@
     <title>Azure Reaper :: Azure Reaper</title>
 
     
-    <link href="/css/nucleus.css?1620638100" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1620638100" rel="stylesheet">
-    <link href="/css/hybrid.css?1620638100" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1620638100" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1620638100" rel="stylesheet">
-    <link href="/css/auto-complete.css?1620638100" rel="stylesheet">
-    <link href="/css/atom-one-dark-reasonable.css?1620638100" rel="stylesheet">
-    <link href="/css/theme.css?1620638100" rel="stylesheet">
-    <link href="/css/tabs.css?1620638100" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1620638100" rel="stylesheet">
+    <link href="/css/nucleus.css?1625650244" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1625650244" rel="stylesheet">
+    <link href="/css/hybrid.css?1625650244" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1625650244" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1625650244" rel="stylesheet">
+    <link href="/css/auto-complete.css?1625650244" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1625650244" rel="stylesheet">
+    <link href="/css/theme.css?1625650244" rel="stylesheet">
+    <link href="/css/tabs.css?1625650244" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1625650244" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1620638100"></script>
+    <script src="/js/jquery-3.3.1.min.js?1625650244"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -52,14 +52,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1620638100"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1620638100"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1625650244"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1625650244"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/example.org\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1620638100"></script>
+<script type="text/javascript" src="/js/search.js?1625650244"></script>
 
     
   </div>
@@ -386,6 +386,10 @@
 <h1 id="azure-reaper">Azure Reaper</h1>
 <p>Azure Reaper is a way of reducing costs in Azure subscriptions as well as automatically tagging ownership of resource groups.</p>
 <p>Azure is a great place to play around with new things and test deployments of code on infrastructure, however more often than not these resources are not deleted so they incur an ongoing cost, such as a virtual machines and Kubernetes nodes.</p>
+
+<div class="notices note" ><p>The Azure Reaper can only manage AKS clusters that are using Scale Sets. The ability to shutdown an AKS cluster is not available to those clusters running as an Availability Set.</p>
+</div>
+
 <p>Reaper helps to keep down costs by:</p>
 <ul>
 <li>Shutting down machines when they are not being used, and starting them up again</li>
@@ -405,7 +409,7 @@
 </div>
 <div class="col-xs-4  border-blue "><h2 id="timer">Timer</h2>
 <p>Every 10 minutes, by default, the reaper runs to determine which resources need to be shutdown or deleted.</p>
-<p>The Reaper function can also be triggered manually nby using the API.</p>
+<p>The Reaper function can also be triggered manually by using the API.</p>
 </div>
 <div class="col-xs-4  border-purple "><h2 id="api">API</h2>
 <p>All of the configuration for Reaper is stored in a storage account using the Azure CosmosDB API. These settings can be managed using the Reaper API. It also has a Swagger UI.</p>
@@ -640,19 +644,19 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1620638100"></script>
-    <script src="/js/perfect-scrollbar.min.js?1620638100"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1620638100"></script>
-    <script src="/js/jquery.sticky.js?1620638100"></script>
-    <script src="/js/featherlight.min.js?1620638100"></script>
-    <script src="/js/highlight.pack.js?1620638100"></script>
+    <script src="/js/clipboard.min.js?1625650244"></script>
+    <script src="/js/perfect-scrollbar.min.js?1625650244"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1625650244"></script>
+    <script src="/js/jquery.sticky.js?1625650244"></script>
+    <script src="/js/featherlight.min.js?1625650244"></script>
+    <script src="/js/highlight.pack.js?1625650244"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1620638100"></script>
-    <script src="/js/learn.js?1620638100"></script>
-    <script src="/js/hugo-learn.js?1620638100"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1625650244"></script>
+    <script src="/js/learn.js?1625650244"></script>
+    <script src="/js/hugo-learn.js?1625650244"></script>
     
         
-            <script src="/mermaid/mermaid.js?1620638100"></script>
+            <script src="/mermaid/mermaid.js?1625650244"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });
