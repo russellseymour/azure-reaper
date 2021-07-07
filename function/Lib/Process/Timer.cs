@@ -81,8 +81,8 @@ namespace Azure.Reaper.Lib.Process
             NotificationDelay notificationDelay = new NotificationDelay(_backend, _logger);
 
             // Create an instance of the reaper and process it
-            Reaper reaper = new Reaper(_backend, _logger, notificationDelay);
-            reaper.Process(settings, subscriptions, locationTZ);
+            Reaper reaper = new Reaper(_backend, _logger, settings, notificationDelay);
+            reaper.Process(subscriptions, locationTZ);
         }
     }
 }

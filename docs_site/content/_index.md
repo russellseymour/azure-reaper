@@ -8,6 +8,10 @@ Azure Reaper is a way of reducing costs in Azure subscriptions as well as automa
 
 Azure is a great place to play around with new things and test deployments of code on infrastructure, however more often than not these resources are not deleted so they incur an ongoing cost, such as a virtual machines and Kubernetes nodes.
 
+{{% notice note %}}
+The Azure Reaper can only manage AKS clusters that are using Scale Sets. The ability to shutdown an AKS cluster is not available to those clusters running as an Availability Set.
+{{% /notice %}}
+
 Reaper helps to keep down costs by:
 
  - Shutting down machines when they are not being used, and starting them up again
@@ -35,7 +39,7 @@ This helps to identify who has owns the group and allows the Reaper to determine
 
 Every 10 minutes, by default, the reaper runs to determine which resources need to be shutdown or deleted.
 
-The Reaper function can also be triggered manually nby using the API.
+The Reaper function can also be triggered manually by using the API.
 {{% /column %}}
 {{% column class="border-purple" %}}
 ## API

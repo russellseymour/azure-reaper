@@ -101,7 +101,7 @@ namespace Azure.Reaper.Lib.Resources
 
         if (inUse)
         {
-          _logger.Information("Group is in use, ignoring: {group}", resourceGroup.Name);
+          _logger.Information("Group is in use, will not delete: {group}", resourceGroup.Name);
           result = true;
         }
 
