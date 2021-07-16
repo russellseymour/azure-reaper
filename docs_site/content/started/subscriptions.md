@@ -18,7 +18,7 @@ The easiest way to create the SPN is to use either the Azure CLI or PowerShell.
 {{< tabs groupId="spn">}}
 {{% tab name="Azure CLI" %}}
 ```bash
-az ad sp create-for-rbac --name AzureReaper
+az ad sp create-for-rbac --name AzureReaper --role Contributor
 ```
 
 ```json
@@ -33,7 +33,7 @@ az ad sp create-for-rbac --name AzureReaper
 {{% /tab %}}
 {{% tab name="PowerShell" %}}
 ```powershell
-New-AzADServicePrincipal -DisplayName "AzureReaper"
+New-AzADServicePrincipal -DisplayName "AzureReaper" -Role "Contributor"
 
 # Output
 Secret                : System.Security.SecureString

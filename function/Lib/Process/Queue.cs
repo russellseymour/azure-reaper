@@ -3,6 +3,8 @@ using Azure.Reaper.Lib.Models;
 using Azure.Reaper.Lib.Resources;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Rest.Azure;
+using System;
 using System.Collections.Generic;
 
 namespace Azure.Reaper.Lib.Process
@@ -72,41 +74,48 @@ namespace Azure.Reaper.Lib.Process
 
         private async void performTagging()
         {
-            _logger.Information("Attempting to tag resource group: {name}", alertContext.GetResourceGroupName());
+            string rgName = alertContext.GetResourceGroupName();
+            _logger.Information("Attempting to tag resource group: {name}", rgName);
 
             // Login to azure using the credentials that have been set on the subscription
             IAzure azure = Utilities.AzureLogin(subscription, AzureEnvironment.AzureGlobalCloud, _logger);
 
             // Check to see if the resource group exists in the subscription
-            bool exists = await azure.ResourceGroups.ContainAsync(alertContext.GetResourceGroupName());
+            try {
+                bool exists = await azure.ResourceGroups.ContainAsync(rgName);
 
-            if (exists)
-            {
-                
-                // Get a list of the tags that need to be added to the group
-                Setting setting = new Setting(_backend, _logger);
-                Response response = setting.GetByCategory("tags");
-                List<Setting> settings = response.GetData();
+                if (exists)
+                {
+                    
+                    // Get a list of the tags that need to be added to the group
+                    Setting setting = new Setting(_backend, _logger);
+                    Response response = setting.GetByCategory("tags");
+                    List<Setting> settings = response.GetData();
 
-                _logger.Debug("Found '{tags}' tags to be considered for the resource group", settings.Count);
+                    _logger.Debug("Found '{tags}' tags to be considered for the resource group", settings.Count);
 
-                // Retrieve the Resource Group object from Azure
-                IResourceGroup resourceGroup = azure.ResourceGroups.GetByName(alertContext.GetResourceGroupName());
-                Group rg = new Group(
-                    _backend,
-                    _logger,
-                    resourceGroup,
-                    settings,
-                    alertContext
-                );
+                    // Retrieve the Resource Group object from Azure
+                    IResourceGroup resourceGroup = azure.ResourceGroups.GetByName(rgName);
+                    Group rg = new Group(
+                        _backend,
+                        _logger,
+                        resourceGroup,
+                        settings,
+                        alertContext
+                    );
 
-                // Add the tags to the resource group
-                rg.AddDefaultTags();
+                    // Add the tags to the resource group
+                    rg.AddDefaultTags();
 
-            }
-            else
-            {
-                _logger.Error("Unable to find resource group: {name}", alertContext.GetResourceGroupName());
+                }
+                else
+                {
+                    _logger.Error("Unable to find resource group: {name}", rgName);
+                }
+            } catch (CloudException ex) {
+                _logger.Fatal("Unable to access subscription '{subscription}', check that the Service Principal for this subscription correct and have the right permissions ({error})", subscription.subscription_id, ex.Message);
+            } catch (Exception ex) {
+                _logger.Fatal("An error occurred: {message}", ex.Message);
             }
         }
     }
