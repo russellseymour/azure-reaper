@@ -137,6 +137,16 @@ namespace Azure.Reaper.Lib
         {
             bool shouldBeRunning = false;
 
+            // if an InUse tag has been set then state that the
+            // resource should be running
+            if (HasTag("tag_inuse"))
+            {
+                shouldBeRunning = true;
+                startResource = false;
+                stopResource = false;
+                return;
+            }
+
             // using the timespans and the permitted to run result, determine if the
             // machine should be running or not
             if ((_timzoneNow.TimeOfDay > tsStart &&
