@@ -47,7 +47,14 @@
     "category": "tags",
     "display_name": "Expired",
     "description": "State that the resource group has expired. Just the presence of this tag is enough, the value does not matter."
-  },    
+  },
+  {
+    "name": "tag_inuse",
+    "value": "InUse",
+    "category": "tags",
+    "display_name": "In Use",
+    "description": "If a resource group or resource is tagged with this tag it will not be power managed or reaped"
+  },  
   {
     "name": "duration",
     "value": 7.0,

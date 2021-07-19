@@ -1,7 +1,7 @@
 
 // Parameters ---------------------------------------------------------------
 
-// name of the CosmosDB in Azure
+// name of the Activity Alert in Azure
 param name string
 
 // tags that should be applied
@@ -9,6 +9,9 @@ param tags object
 
 // id of the action group
 param actionGroupId string
+
+// The subscription that the logalert should be applied to
+param subscriptionId string = subscription().id
 
 // Variables ----------------------------------------------------------------
 
@@ -22,7 +25,7 @@ resource logAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
     enabled: true
     description: 'Activity alert to watch for newly created resource groups'
     scopes: [
-      subscription().id
+      subscriptionId
     ]
     condition: {
       allOf: [
