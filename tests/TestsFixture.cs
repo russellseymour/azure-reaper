@@ -59,6 +59,11 @@ public class TestsFixture : IDisposable
         setting6.value = "1800";
         settings.Add(setting6);
 
+        Setting setting7 = new Setting();
+        setting7.name = "tag_inuse";
+        setting7.value = "InUse";
+        settings.Add(setting7);        
+
         // configure necessary timezones
         timeZones = new List<LocationTZ>();
 
